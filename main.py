@@ -27,7 +27,7 @@ else:
     primaryEmail TEXT,
     number INTEGER
     );""")
-    con.commit()#
+    con.commit()
     con.close()
 
 if exists('./config.json'):
