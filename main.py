@@ -1,6 +1,5 @@
 # Import packages
 from os.path import exists
-from os.path import isdir
 import os
 import sys
 import sqlite3
@@ -63,14 +62,6 @@ smtpPort = config['smtpPort']
 fromAddress = config['fromAddress']
 smtpPassword = config['smtpPassword']
 
-def clearDB():
-    con = sqlite3.connect(dbfile)
-    cur = con.cursor()
-    cur.execute("DELETE FROM whiteElephantData")
-    con.commit()
-    con.close()
-    print("Database cleared")
-
 # main window definitions
 rootWindow = tk.Tk()
 
@@ -92,23 +83,16 @@ primaryEmail = tk.StringVar()
 
 
 #functions
+def clearDB():
+    con = sqlite3.connect(dbfile)
+    cur = con.cursor()
+    cur.execute("DELETE FROM whiteElephantData")
+    con.commit()
+    con.close()
+    print("Database cleared")
 def onClosing():
-    close = messagebox.askyesno("Exit?", "Are you sure you want to exit? All entries will be assigned numbers and will be emailed. A full list of numbers will be emailed to the first registered user.")
-    if close:
-        con = sqlite3.connect(dbfile)
-        cur = con.cursor()
-        try:
-            data = cur.execute("SELECT * FROM whiteElephantData").fetchall()
-            name, primaryEmail, number = zip(*data)
-        except:
-            rootWindow.destroy()
-            con.close()
-        con.close()
-
-        rootWindow.destroy()
-        assignNumbers()
-        emailNumbers()
-
+    print("Main window closed")
+    rootWindow.destroy()
 
 def submitValues():
     name = nameBox.get()
@@ -130,7 +114,6 @@ def assignNumbers():
     cur = con.cursor()
     data = cur.execute("SELECT * FROM whiteElephantData").fetchall()
     name, primaryEmail, number = zip(*data)
-
 
     assignedNumbers = random.sample(range(len(name)), len(name))
     assignedNumbers = [x + 1 for x in assignedNumbers]
@@ -171,6 +154,15 @@ def emailNumbers():
         )
         print("Full Number List sent to " + name[0] + " at " + primaryEmail[0])
 
+def listCurrentPlayers():
+    con = sqlite3.connect(dbfile)
+    cur = con.cursor()
+    data = cur.execute("SELECT * FROM whiteElephantData").fetchall()
+    name, primaryEmail, number = zip(*data)
+    con.close()
+
+    for i in range(len(name)):
+        print(name[i])
 
 
 rootWindow.title("White Elephant Number Distributor")
@@ -196,13 +188,46 @@ submitButton = ttk.Button(
 )
 submitButton.pack(padx=10, pady=10, fill='x', expand=True)
 
+def openWindow():
+    # remove blur and open main window
+    try:
+        from ctypes import windll
+        windll.shcore.SetProcessDpiAwareness(1)
+    except:
+        print("Not a Windows machine, skipping ctypes")
+    finally:
+        rootWindow.protocol("WM_DELETE_WINDOW", onClosing)
+        rootWindow.mainloop()
 
-# remove blur and open main window
-try:
-    from ctypes import windll
-    windll.shcore.SetProcessDpiAwareness(1)
-except:
-    print("Not a Windows machine, skipping ctypes")
-finally:
-    rootWindow.protocol("WM_DELETE_WINDOW", onClosing)
-    rootWindow.mainloop()
+menu = {}
+menu['1']="Gather new players"
+menu['2']="Assign and email numbers"
+menu['3']="List current players"
+menu['4']="Clear DB"
+menu['5']="Exit"
+
+while True:
+    options=menu.keys()
+    print()
+    for entry in options:
+        print(entry, menu[entry])
+
+    print()
+    selection=input("Please select an option:")
+    if selection =='1':
+        print()
+        openWindow()
+    elif selection =='2':
+        print()
+        assignNumbers()
+        emailNumbers()
+    elif selection =='3':
+        print()
+        listCurrentPlayers()
+    elif selection =='4':
+        print()
+        clearDB()
+    elif selection =='5':
+        break
+    else:
+        print("Invalid selection")
