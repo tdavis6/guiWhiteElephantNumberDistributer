@@ -37,7 +37,7 @@ else:
     print("Creating new configuration file")
 
     with open('./config.json', 'w') as config:
-        config.writelines('{"smtpServer": "","smtpPort": "","smtpPassword": "","fromAddress": ""}')
+        config.writelines('{"smtpServer": "","smtpPort": "465","smtpPassword": "","fromAddress": ""}')
     print("Please completely fill config.json before running again.")
     sys.exit()
 
