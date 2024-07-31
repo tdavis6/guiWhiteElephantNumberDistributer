@@ -1,5 +1,7 @@
 # Import packages
 from os.path import exists
+from os.path import isdir
+import os
 import sys
 import sqlite3
 import smtplib
@@ -12,15 +14,23 @@ from tkinter import messagebox
 
 version = "v0.1.0"
 
-if exists('./data.db'):
+dbfile = './guiWhiteElephantDistributor/data.db'
+configfile = './guiWhiteElephantDistributor/config.json'
+
+if exists("./guiWhiteElephantDistributor/"):
+    print("Directory found")
+else:
+    os.mkdir("./guiWhiteElephantDistributor/")
+
+if exists(dbfile):
     print("Database file found")
 else:
     print("Database file not found")
     print("Creating new database file")
 
-    open('./data.db', "x")
+    open(dbfile, "x")
 
-    con = sqlite3.connect('./data.db')
+    con = sqlite3.connect(dbfile)
     cur = con.cursor()
     data = cur.execute("""CREATE TABLE IF NOT EXISTS whiteElephantData (
     name TEXT,
@@ -30,20 +40,19 @@ else:
     con.commit()
     con.close()
 
-if exists('./config.json'):
+if exists(configfile):
     print("Configuration file found")
 else:
     print("Configuration file not found")
     print("Creating new configuration file")
 
-    with open('./config.json', 'w') as config:
+    with open(configfile, 'w') as config:
         config.writelines('{"smtpServer": "","smtpPort": "465","smtpPassword": "","fromAddress": ""}')
     print("Please completely fill config.json before running again.")
     sys.exit()
 
-dbfile = './data.db'
+config = json.load(open('guiWhiteElephantDistributor/config.json'))
 
-config = json.load(open('./config.json'))
 
 if config['smtpServer'] == "" or config['smtpPort'] == "" or config['smtpPassword'] == "" or config['fromAddress'] == "":
     print("Please completely fill config.json before running again.")
@@ -60,8 +69,7 @@ def clearDB():
     cur.execute("DELETE FROM whiteElephantData")
     con.commit()
     con.close()
-
-clearDB()
+    print("Database cleared")
 
 # main window definitions
 rootWindow = tk.Tk()

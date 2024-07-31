@@ -1,6 +1,6 @@
 # Project specific
-data.db
-config.json
+guiWhiteElephantDistributor/data.db
+guiWhiteElephantDistributor/config.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
