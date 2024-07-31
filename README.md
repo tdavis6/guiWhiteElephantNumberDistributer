@@ -1,1 +1,1 @@
-# guiWhiteElephantNumberDistributer
+# guiWhiteElephantNumberDistributor
