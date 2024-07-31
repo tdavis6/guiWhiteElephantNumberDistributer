@@ -192,8 +192,9 @@ submitButton.pack(padx=10, pady=10, fill='x', expand=True)
 # remove blur and open main window
 try:
     from ctypes import windll
-
     windll.shcore.SetProcessDpiAwareness(1)
+except:
+    print("Not a Windows machine, skipping ctypes")
 finally:
     rootWindow.protocol("WM_DELETE_WINDOW", onClosing)
     rootWindow.mainloop()
