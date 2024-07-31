@@ -57,7 +57,7 @@ smtpPassword = config['smtpPassword']
 def clearDB():
     con = sqlite3.connect(dbfile)
     cur = con.cursor()
-    data = cur.execute("DELETE FROM whiteElephantData")
+    cur.execute("DELETE FROM whiteElephantData")
     con.commit()
     con.close()
 
