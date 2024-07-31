@@ -140,6 +140,12 @@ def emailNumbers():
     context = ssl.create_default_context()
     with smtplib.SMTP_SSL(smtpServer, smtpPort, context=context) as server:
         server.login(fromAddress, smtpPassword)
+        server.sendmail(
+            fromAddress,
+            primaryEmail[0],
+            messageFullNumberList.format(email=primaryEmail[0],fullNumberList=fullNumberList)
+        )
+        print("Full Number List sent to " + name[0] + " at " + primaryEmail[0])
         for i in range(len(name)):
             server.sendmail(
                 fromAddress,
@@ -147,12 +153,6 @@ def emailNumbers():
                 message.format(name=name[i], email=primaryEmail[i], number=number[i])
             )
             print("Email sent to " + name[i] + " at " + primaryEmail[i])
-        server.sendmail(
-            fromAddress,
-            primaryEmail[0],
-            messageFullNumberList.format(email=primaryEmail[0],fullNumberList=fullNumberList)
-        )
-        print("Full Number List sent to " + name[0] + " at " + primaryEmail[0])
 
 def listCurrentPlayers():
     con = sqlite3.connect(dbfile)
@@ -201,8 +201,8 @@ def openWindow():
 
 menu = {}
 menu['1']="Gather new players"
-menu['2']="Assign and email numbers"
-menu['3']="List current players"
+menu['2']="List current players"
+menu['3']="Assign and email numbers"
 menu['4']="Clear DB"
 menu['5']="Exit"
 
@@ -219,11 +219,11 @@ while True:
         openWindow()
     elif selection =='2':
         print()
-        assignNumbers()
-        emailNumbers()
+        listCurrentPlayers()
     elif selection =='3':
         print()
-        listCurrentPlayers()
+        assignNumbers()
+        emailNumbers()
     elif selection =='4':
         print()
         clearDB()
