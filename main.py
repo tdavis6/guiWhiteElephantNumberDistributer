@@ -13,13 +13,14 @@ from tkinter import messagebox
 
 version = "v0.1.0"
 
-dbfile = './guiWhiteElephantDistributor/data.db'
-configfile = './guiWhiteElephantDistributor/config.json'
+fileDirectory = './whiteElephantNumberDistributor/'
+dbfile = './whiteElephantNumberDistributor/data.db'
+configfile = './whiteElephantNumberDistributor/config.json'
 
-if exists("./guiWhiteElephantDistributor/"):
+if exists(fileDirectory):
     print("Directory found")
 else:
-    os.mkdir("./guiWhiteElephantDistributor/")
+    os.mkdir(fileDirectory)
 
 if exists(dbfile):
     print("Database file found")
@@ -50,7 +51,7 @@ else:
     print("Please completely fill config.json before running again.")
     sys.exit()
 
-config = json.load(open('guiWhiteElephantDistributor/config.json'))
+config = json.load(open(configfile))
 
 
 if config['smtpServer'] == "" or config['smtpPort'] == "" or config['smtpPassword'] == "" or config['fromAddress'] == "":
