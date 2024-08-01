@@ -81,7 +81,7 @@ def assignNumbers():
         data = cur.execute("SELECT * FROM whiteElephantData").fetchall()
         name, primaryEmail, number = zip(*data)
     except ValueError:
-        print("No players found")
+        print("No participants found")
     else:
         assignedNumbers = random.sample(range(len(name)), len(name))
         assignedNumbers = [x + 1 for x in assignedNumbers]
@@ -101,7 +101,7 @@ def emailNumbers():
         data = cur.execute("SELECT * FROM whiteElephantData").fetchall()
         name, primaryEmail, number = zip(*data)
     except ValueError:
-        print("No players found")
+        print("No participants found")
     else:
         fullNumberList = [(name[i], number[i]) for i in range(len(name))]
         con.close()
@@ -126,14 +126,14 @@ def emailNumbers():
                 )
                 print("Email sent to " + name[i] + " at " + primaryEmail[i])
 
-def listCurrentPlayers():
+def listCurrentParticipants():
     con = sqlite3.connect(dbfile)
     cur = con.cursor()
     try:
         data = cur.execute("SELECT * FROM whiteElephantData").fetchall()
         name, primaryEmail, number = zip(*data)
     except ValueError:
-        print("No players found")
+        print("No participants found")
     else:
         con.close()
         for i in range(len(name)):
@@ -227,8 +227,8 @@ rootWindow.withdraw()
 
 def printMenu():
     menu = {}
-    menu['1'] = "Gather new players"
-    menu['2'] = "List current players"
+    menu['1'] = "Gather new participants"
+    menu['2'] = "List current participants"
     menu['3'] = "Assign and email numbers"
     menu['4'] = "Clear DB"
     menu['5'] = "Print Menu"
@@ -252,7 +252,7 @@ while True:
             print()
         elif selection =='2':
             print()
-            listCurrentPlayers()
+            listCurrentParticipants()
             print()
         elif selection =='3':
             print()
