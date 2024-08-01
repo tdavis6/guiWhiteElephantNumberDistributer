@@ -7,9 +7,9 @@ number for everyone in the database.
 ## Details
 
 When running the program, there are 6 options in the main menu. Option 1 opens a GUI for collecting names and emails,
-option 2 lists all the names for the participants currently in data.db, option 3 assigns everyone (new) numbers and
-emails it to them, option 4 clears the entire database, option 5 reprints the selections to the console, and
-option 6 exits the program. 
+option 2 lists all the names for the participants currently in data.db, option 3 assigns everyone (new) numbers, option
+4 distributes numbers via email, option 5 clears the entire database, option 6 reprints the selections to the console, and
+option 7 exits the program. 
 
 When option 1 is selected, the GUI will open in a full screen window. Please press escape to exit the window. When back 
 in the terminal, press enter to be able to select a new option.

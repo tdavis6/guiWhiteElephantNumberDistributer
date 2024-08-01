@@ -110,6 +110,7 @@ def emailNumbers():
         messageFullNumberList= """From: noreply@tylerdavis.net\nTo: {email}\nSubject: Full list of White Elephant Numbers\n\nSee below for the full list of numbers:\n{fullNumberList}"""
 
         context = ssl.create_default_context()
+
         with smtplib.SMTP_SSL(smtpServer, smtpPort, context=context) as server:
             server.login(fromAddress, smtpPassword)
             server.sendmail(
@@ -163,6 +164,9 @@ def closeWindow(event):
     rootWindow.withdraw()
     print("Main window closed")
 
+def submitValesReturn(event):
+    submitValues()
+
 def submitValues():
     name = nameBox.get()
     primaryEmail = primaryEmailBox.get()
@@ -186,6 +190,7 @@ rootWindow = tk.Tk()
 rootWindow.attributes('-fullscreen', True)
 rootWindow.protocol("WM_DELETE_WINDOW", onClosing)
 rootWindow.bind('<Escape>', closeWindow)
+rootWindow.bind('<Return>', submitValesReturn)
 
 window_width = 400
 window_height = 300
@@ -232,10 +237,11 @@ def printMenu():
     menu = {}
     menu['1'] = "Gather new participants"
     menu['2'] = "List current participants"
-    menu['3'] = "Assign and email numbers"
-    menu['4'] = "Clear DB"
-    menu['5'] = "Print Menu"
-    menu['6'] = "Exit"
+    menu['3'] = "Assign numbers"
+    menu['4'] = "Email numbers"
+    menu['5'] = "Clear DB"
+    menu['6'] = "Print Menu"
+    menu['7'] = "Exit"
 
     options=menu.keys()
     for entry in options:
@@ -260,16 +266,19 @@ while True:
         elif selection =='3':
             print()
             assignNumbers()
-            emailNumbers()
             print()
         elif selection =='4':
             print()
-            clearDB()
+            emailNumbers()
             print()
         elif selection =='5':
             print()
-            printMenu()
+            clearDB()
+            print()
         elif selection =='6':
+            print()
+            printMenu()
+        elif selection =='7':
             break
         else:
             print("\nInvalid selection\n")
