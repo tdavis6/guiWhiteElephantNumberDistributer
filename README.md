@@ -11,7 +11,8 @@ option 2 lists all the names for the participants currently in data.db, option 3
 emails it to them, option 4 clears the entire database, option 5 reprints the selections to the console, and
 option 6 exits the program. 
 
-When option 1 is selected, the GUI will open in a full screen window. Please press escape to exit the window.
+When option 1 is selected, the GUI will open in a full screen window. Please press escape to exit the window. When back 
+in the terminal, press enter to be able to select a new option.
 
 config.json and data.db will be generated on the first run.
 
