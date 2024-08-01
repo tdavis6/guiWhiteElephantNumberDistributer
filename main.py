@@ -9,6 +9,7 @@ import random
 import json
 import tkinter as tk
 from tkinter import ttk
+import time
 
 version = "v0.1.0"
 
@@ -47,14 +48,16 @@ else:
 
     with open(configfile, 'w') as config:
         config.writelines('{"smtpServer": "","smtpPort": "465","smtpPassword": "","fromAddress": ""}')
-    print("Please completely fill config.json before running again.")
+    print("\nPlease completely fill config.json before running again. Program will exit in 10 seconds.")
+    time.sleep(10)
     sys.exit()
 
 config = json.load(open(configfile))
 
 
 if config['smtpServer'] == "" or config['smtpPort'] == "" or config['smtpPassword'] == "" or config['fromAddress'] == "":
-    print("Please completely fill config.json before running again.")
+    print("\nPlease completely fill config.json before running again. Program will exit in 10 seconds.")
+    time.sleep(10)
     sys.exit()
 
 smtpServer = config['smtpServer']
@@ -155,6 +158,10 @@ def onClosing():
     rootWindow.withdraw()
     print("Main window closed")
 
+def closeWindow(event):
+    rootWindow.withdraw()
+    print("Main window closed")
+
 def submitValues():
     name = nameBox.get()
     primaryEmail = primaryEmailBox.get()
@@ -173,7 +180,9 @@ def submitValues():
 # main window definition
 rootWindow = tk.Tk()
 
+rootWindow.attributes('-fullscreen', True)
 rootWindow.protocol("WM_DELETE_WINDOW", onClosing)
+rootWindow.bind('<Escape>', closeWindow)
 
 window_width = 400
 window_height = 300
@@ -233,28 +242,31 @@ print()
 printMenu()
 
 while True:
-    selection=input("Please select an option:")
-    if selection =='1':
-        print()
-        openWindow()
-        print()
-    elif selection =='2':
-        print()
-        listCurrentPlayers()
-        print()
-    elif selection =='3':
-        print()
-        assignNumbers()
-        emailNumbers()
-        print()
-    elif selection =='4':
-        print()
-        clearDB()
-        print()
-    elif selection =='5':
-        print()
-        printMenu()
-    elif selection =='6':
-        break
+    if rootWindow.state() == "normal":
+        input("Please press enter when the data collection window is closed and you are ready to continue\n")
     else:
-        print("\nInvalid selection\n")
+        selection=input("Please select an option:")
+        if selection =='1':
+            print()
+            openWindow()
+            print()
+        elif selection =='2':
+            print()
+            listCurrentPlayers()
+            print()
+        elif selection =='3':
+            print()
+            assignNumbers()
+            emailNumbers()
+            print()
+        elif selection =='4':
+            print()
+            clearDB()
+            print()
+        elif selection =='5':
+            print()
+            printMenu()
+        elif selection =='6':
+            break
+        else:
+            print("\nInvalid selection\n")
