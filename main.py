@@ -173,6 +173,8 @@ def submitValues():
     con.commit()
     con.close()
 
+    print("Added " + name + " with email " + primaryEmail + " to the database")
+
     nameBox.delete(0, tk.END)
     primaryEmailBox.delete(0, tk.END)
     nameBox.focus()
