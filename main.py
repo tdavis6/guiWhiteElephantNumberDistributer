@@ -136,8 +136,9 @@ def listCurrentParticipants():
         print("No participants found")
     else:
         con.close()
+        print("Name and email of all participants")
         for i in range(len(name)):
-            print(name[i])
+            print(name[i] + " " + primaryEmail[i])
 
 def openWindow():
     # remove blur and open main window
