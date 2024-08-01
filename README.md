@@ -1,3 +1,3 @@
-# White Elephant Number Distributor GUI
+# White Elephant Number Distributor
 
 Python program to help distribute White Elephant numbers. 
