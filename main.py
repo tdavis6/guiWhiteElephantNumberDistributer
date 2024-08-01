@@ -120,12 +120,15 @@ def emailNumbers():
             )
             print("Full Number List sent to " + name[0] + " at " + primaryEmail[0])
             for i in range(len(name)):
-                server.sendmail(
-                    fromAddress,
-                    primaryEmail[i],
-                    message.format(name=name[i], email=primaryEmail[i], number=number[i])
-                )
-                print("Email sent to " + name[i] + " at " + primaryEmail[i])
+                try:
+                    server.sendmail(
+                        fromAddress,
+                        primaryEmail[i],
+                        message.format(name=name[i], email=primaryEmail[i], number=number[i])
+                    )
+                    print("Email sent to " + name[i] + " at " + primaryEmail[i])
+                except smtplib.SMTPRecipientsRefused:
+                    print("Email failed to send to " + name[i] + " at " + primaryEmail[i])
 
 def listCurrentParticipants():
     con = sqlite3.connect(dbfile)
@@ -235,13 +238,13 @@ rootWindow.withdraw()
 
 def printMenu():
     menu = {}
+    menu['0'] = "Print Menu"
     menu['1'] = "Gather new participants"
     menu['2'] = "List current participants"
     menu['3'] = "Assign numbers"
     menu['4'] = "Email numbers"
     menu['5'] = "Clear DB"
-    menu['6'] = "Print Menu"
-    menu['7'] = "Exit"
+    menu['6'] = "Exit"
 
     options=menu.keys()
     for entry in options:
@@ -255,7 +258,10 @@ while True:
         input("Please press enter when the data collection window is closed and you are ready to continue\n")
     else:
         selection=input("Please select an option:")
-        if selection =='1':
+        if selection =='0':
+            print()
+            printMenu()
+        elif selection =='1':
             print()
             openWindow()
             print()
@@ -276,9 +282,6 @@ while True:
             clearDB()
             print()
         elif selection =='6':
-            print()
-            printMenu()
-        elif selection =='7':
             break
         else:
             print("\nInvalid selection\n")
