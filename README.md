@@ -22,7 +22,7 @@ config.json and data.db will be generated on the first run.
 | 5      | Delete a participant from the database                                     |
 | 6      | Prune empty rows from the database                                         |
 | 7      | Clear the database                                                         |
-| 8      | Exit the program                                                           |
+| -      | Exit the program                                                           |
 
 ## Set up
 Set up is minimal. Clone this repository and run run.bat. Next, fill out all values in config.json. The program will 

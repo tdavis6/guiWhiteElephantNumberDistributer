@@ -103,7 +103,10 @@ def emailNumbers():
     except ValueError:
         print("No participants found")
     else:
-        fullNumberList = [(name[i], number[i]) for i in range(len(name))]
+        fullNumberList = """"""
+        for i in range(len(name)):
+            fullNumberList = fullNumberList + ("\n" + str(number[i]) + ": " + name[i])
+        #[(name[i], number[i]) for i in range(len(name))]
         con.close()
 
         message = """From: noreply@tylerdavis.net\nTo: {email}\nSubject: White Elephant Number\n\n{name}, your number for White Elephant is {number}!"""
@@ -127,8 +130,8 @@ def emailNumbers():
                         message.format(name=name[i], email=primaryEmail[i], number=number[i])
                     )
                     print("Email sent to " + name[i] + " at " + primaryEmail[i])
-                except smtplib.SMTPRecipientsRefused:
-                    print("Email failed to send to " + name[i] + " at " + primaryEmail[i])
+                except smtplib.SMTPException as e:
+                    print("Email failed to send to " + name[i] + " at " + primaryEmail[i] + " with error " + str(e))
 
 def listCurrentParticipants():
     con = sqlite3.connect(dbfile)
@@ -285,7 +288,7 @@ def printMenu():
     menu['5'] = "Delete participant"
     menu['6'] = "Prune empty entries"
     menu['7'] = "Clear DB"
-    menu['8'] = "Exit"
+    menu['-'] = "Exit"
 
     options=menu.keys()
     for entry in options:
@@ -330,7 +333,7 @@ while True:
             print()
             clearDB()
             print()
-        elif selection =='8':
+        elif selection =='-':
             break
         else:
             print("\nInvalid selection\n")
