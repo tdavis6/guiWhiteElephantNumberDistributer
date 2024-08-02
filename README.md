@@ -6,15 +6,23 @@ number for everyone in the database.
 
 ## Details
 
-When running the program, there are 6 options in the main menu. Option 1 opens a GUI for collecting names and emails,
-option 2 lists all the names for the participants currently in data.db, option 3 assigns everyone (new) numbers, option
-4 distributes numbers via email, option 5 clears the entire database, and
-option 7 exits the program. Option 0 will reprint the menu options to the console.
-
 When option 1 is selected, the GUI will open in a full screen window. Please press escape to exit the window. When back 
 in the terminal, press enter to be able to select a new option.
 
 config.json and data.db will be generated on the first run.
+
+### Menu Options
+| Number | Function                                                                   |
+|--------|----------------------------------------------------------------------------|
+| 0      | Display the menu options                                                   |
+| 1      | Opens a GUI to collect names and emails                                    |
+| 2      | Lists the names and emails of all participants                             |
+| 3      | Assigns numbers (new numbers will be assigned if there are already values) |
+| 4      | Distributes all numbers via email                                          |
+| 5      | Delete a participant from the database                                     |
+| 6      | Prune empty rows from the database                                         |
+| 7      | Clear the database                                                         |
+| 8      | Exit the program                                                           |
 
 ## Set up
 Set up is minimal. Clone this repository and run run.bat. Next, fill out all values in config.json. The program will 
@@ -33,3 +41,4 @@ smtpPort = 465, fromAddress to your email, and smtpPassword to an app password f
 - json
 - tkinter
 - time
+- thread

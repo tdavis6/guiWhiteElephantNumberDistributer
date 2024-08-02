@@ -187,6 +187,45 @@ def submitValues():
     primaryEmailBox.delete(0, tk.END)
     nameBox.focus()
 
+def deleteParticipant():
+    con = sqlite3.connect(dbfile)
+    cur = con.cursor()
+    while True:
+        try:
+            data = cur.execute("SELECT * FROM whiteElephantData").fetchall()
+            name, primaryEmail, number = zip(*data)
+        except ValueError:
+            print("No participants found")
+            break
+        else:
+            print("Name and email of all participants")
+            for i in range(len(name)):
+                print(name[i] + " | " + primaryEmail[i])
+        deleteName = input("Enter the name of who you want to remove as it appears, or press enter to exit:")
+        if deleteName == "":
+            break
+        else:
+            sqliteCommand = "DELETE FROM whiteElephantData WHERE name=?;"
+            cur.execute(sqliteCommand, (deleteName,))
+            print("\nDeleted " + deleteName + " from the database\n")
+    con.commit()
+    con.close()
+
+def pruneParticipants():
+    con = sqlite3.connect(dbfile)
+    cur = con.cursor()
+    try:
+        data = cur.execute("SELECT * FROM whiteElephantData").fetchall()
+        name, primaryEmail, number = zip(*data)
+    except ValueError:
+        print("No participants found")
+    else:
+        cur.execute("DELETE FROM whiteElephantData WHERE name=''")
+        cur.execute("DELETE FROM whiteElephantData WHERE name IS NULL")
+        print("Participants pruned")
+    con.commit()
+    con.close()
+
 # main window definition
 rootWindow = tk.Tk()
 
@@ -243,8 +282,10 @@ def printMenu():
     menu['2'] = "List current participants"
     menu['3'] = "Assign numbers"
     menu['4'] = "Email numbers"
-    menu['5'] = "Clear DB"
-    menu['6'] = "Exit"
+    menu['5'] = "Delete participant"
+    menu['6'] = "Prune empty entries"
+    menu['7'] = "Clear DB"
+    menu['8'] = "Exit"
 
     options=menu.keys()
     for entry in options:
@@ -277,11 +318,19 @@ while True:
             print()
             emailNumbers()
             print()
-        elif selection =='5':
+        elif selection == '5':
+            print()
+            deleteParticipant()
+            print()
+        elif selection =='6':
+            print()
+            pruneParticipants()
+            print()
+        elif selection =='7':
             print()
             clearDB()
             print()
-        elif selection =='6':
+        elif selection =='8':
             break
         else:
             print("\nInvalid selection\n")
