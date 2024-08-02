@@ -11,17 +11,21 @@ import tkinter as tk
 from tkinter import ttk
 import time
 
-version = "v0.1.0"
+# declare the version number
+version = "v1.0.0"
 
+# declare widely used paths and files
 fileDirectory = './whiteElephantNumberDistributor/'
 dbfile = './whiteElephantNumberDistributor/data.db'
 configfile = './whiteElephantNumberDistributor/config.json'
 
+# check if fileDirectory exists, and create it if it doesn't
 if exists(fileDirectory):
     print("Directory found")
 else:
     os.mkdir(fileDirectory)
 
+# check if dbfile exists, and create it if it doesn't
 if exists(dbfile):
     print("Database file found")
 else:
@@ -40,6 +44,8 @@ else:
     con.commit()
     con.close()
 
+# check if fileDirectory exists, and create it if it doesn't
+
 if exists(configfile):
     print("Configuration file found")
 else:
@@ -52,14 +58,16 @@ else:
     time.sleep(10)
     sys.exit()
 
+# loads config file as json
 config = json.load(open(configfile))
 
-
+# stop program if any config values are empty
 if config['smtpServer'] == "" or config['smtpPort'] == "" or config['smtpPassword'] == "" or config['fromAddress'] == "":
     print("\nPlease completely fill config.json before running again. Program will exit in 10 seconds.")
     time.sleep(10)
     sys.exit()
 
+# save config as variables
 smtpServer = config['smtpServer']
 smtpPort = config['smtpPort']
 fromAddress = config['fromAddress']
@@ -77,15 +85,17 @@ def clearDB():
 def assignNumbers():
     con = sqlite3.connect(dbfile)
     cur = con.cursor()
-    try:
+    try:#checks if the data exists
         data = cur.execute("SELECT * FROM whiteElephantData").fetchall()
         name, primaryEmail, number = zip(*data)
-    except ValueError:
+    except ValueError:#handles exception for no rows in the table
         print("No participants found")
     else:
+        #generate numbers
         assignedNumbers = random.sample(range(len(name)), len(name))
         assignedNumbers = [x + 1 for x in assignedNumbers]
 
+        #save numbers to data.db
         for i, name in enumerate(name):
             cur.execute("UPDATE whiteElephantData SET number = ? WHERE name = ?;", (assignedNumbers[i], name))
 
@@ -97,36 +107,36 @@ def assignNumbers():
 def emailNumbers():
     con = sqlite3.connect(dbfile)
     cur = con.cursor()
-    try:
+    try:#checks for data
         data = cur.execute("SELECT * FROM whiteElephantData").fetchall()
         name, primaryEmail, number = zip(*data)
-    except ValueError:
+    except ValueError:#handles exception for no rows in the table
         con.close()
         print("No participants found")
     else:
         con.close()
         orderedList = list(zip(name, number))
-        orderedList.sort(key=lambda x: x[1], reverse=False)
+        orderedList.sort(key=lambda x: x[1], reverse=False)#numerically orders list according to number
         orderedName, orderedNumber = zip(*orderedList)
         fullNumberList = """"""
         for i in range(len(name)):
             fullNumberList = fullNumberList + ("\n" + str(orderedNumber[i]) + ": " + orderedName[i])
-        print(fullNumberList)
+        print(fullNumberList)#prints ordered list to console
 
         message = """From: noreply@tylerdavis.net\nTo: {email}\nSubject: White Elephant Number\n\n{name}, your number for White Elephant is {number}!"""
         messageFullNumberList= """From: noreply@tylerdavis.net\nTo: {email}\nSubject: Full list of White Elephant Numbers\n\nSee below for the full list of numbers:\n{fullNumberList}"""
 
-        context = ssl.create_default_context()
+        context = ssl.create_default_context()#set up smtp
 
         with smtplib.SMTP_SSL(smtpServer, smtpPort, context=context) as server:
             server.login(fromAddress, smtpPassword)
             server.sendmail(
                 fromAddress,
                 primaryEmail[0],
-                messageFullNumberList.format(email=primaryEmail[0],fullNumberList=fullNumberList)
+                messageFullNumberList.format(email=primaryEmail[0],fullNumberList=fullNumberList)#sends the full number list
             )
             print("Full Number List sent to " + name[0] + " at " + primaryEmail[0])
-            for i in range(len(name)):
+            for i in range(len(name)):#sends all individual emails
                 try:
                     server.sendmail(
                         fromAddress,
@@ -135,7 +145,7 @@ def emailNumbers():
                     )
                     print("Email sent to " + name[i] + " at " + primaryEmail[i])
                 except smtplib.SMTPException as e:
-                    print("Email failed to send to " + name[i] + " at " + primaryEmail[i] + " with error " + str(e))
+                    print("Email failed to send to " + name[i] + " at " + primaryEmail[i] + " with error " + str(e))#handles exception for any SMTP error, prints exception to console
 
 def listCurrentParticipants():
     con = sqlite3.connect(dbfile)
@@ -143,16 +153,16 @@ def listCurrentParticipants():
     try:
         data = cur.execute("SELECT * FROM whiteElephantData").fetchall()
         name, primaryEmail, number = zip(*data)
-    except ValueError:
+    except ValueError:#handles exception for no rows in the table
         print("No participants found")
     else:
         con.close()
         print("Name and email of all participants")
         for i in range(len(name)):
-            print(name[i] + " | " + primaryEmail[i])
+            print(name[i] + " | " + primaryEmail[i])#prints the name and email of all participants in data.db
 
 def openWindow():
-    # remove blur and open main window
+    # remove blur and open main window, decides whether to deiconify the window or to start it for the first time
     if rootWindow.state() == "withdrawn":
         rootWindow.deiconify()
         print("Main window opened")
@@ -201,7 +211,7 @@ def deleteParticipant():
         try:
             data = cur.execute("SELECT * FROM whiteElephantData").fetchall()
             name, primaryEmail, number = zip(*data)
-        except ValueError:
+        except ValueError:#handles exception for no rows in the table
             print("No participants found")
             break
         else:
@@ -214,7 +224,7 @@ def deleteParticipant():
         else:
             sqliteCommand = "DELETE FROM whiteElephantData WHERE name=?;"
             cur.execute(sqliteCommand, (deleteName,))
-            print("\nDeleted " + deleteName + " from the database\n")
+            print("\nDeleted " + deleteName + " from the database\n") #deletes values matching the inputted name
     con.commit()
     con.close()
 
@@ -224,9 +234,9 @@ def pruneParticipants():
     try:
         data = cur.execute("SELECT * FROM whiteElephantData").fetchall()
         name, primaryEmail, number = zip(*data)
-    except ValueError:
+    except ValueError:#handles exception for no rows in the table
         print("No participants found")
-    else:
+    else:#deletes empty rows
         cur.execute("DELETE FROM whiteElephantData WHERE name=''")
         cur.execute("DELETE FROM whiteElephantData WHERE name IS NULL")
         print("Participants pruned")
@@ -298,6 +308,9 @@ def printMenu():
     for entry in options:
         print(entry, menu[entry])
 
+print()
+print(f"You are using whiteElephantNumberDistributor version {version}")
+print()
 print()
 printMenu()
 
