@@ -13,16 +13,16 @@ config.json and data.db will be generated on the first run.
 
 ### Menu Options
 | Number | Function                                                                   |
-|--------|----------------------------------------------------------------------------|
-| 0      | Display the menu options                                                   |
-| 1      | Opens a GUI to collect names and emails                                    |
-| 2      | Lists the names and emails of all participants                             |
-| 3      | Assigns numbers (new numbers will be assigned if there are already values) |
-| 4      | Distributes all numbers via email                                          |
-| 5      | Delete a participant from the database                                     |
-| 6      | Prune empty rows from the database                                         |
-| 7      | Clear the database                                                         |
-| -      | Exit the program                                                           |
+|-------|----------------------------------------------------------------------------|
+| 1     | Opens a GUI to collect names and emails                                    |
+| 2     | Lists the names and emails of all participants                             |
+| 3     | Assigns numbers (new numbers will be assigned if there are already values) |
+| 4     | Distributes all numbers via email                                          |
+| 5     | Delete a participant from the database                                     |
+| 6     | Prune empty rows from the database                                         |
+| 7     | Clear the database                                                         |
+| 0     | Display the menu options                                                   |
+| -     | Exit the program                                                           |
 
 ## Set up
 Set up is minimal. Clone this repository and run run.bat. Next, fill out all values in config.json. The program will 

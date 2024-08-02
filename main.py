@@ -107,17 +107,26 @@ def assignNumbers():
 def emailNumbers():
     con = sqlite3.connect(dbfile)
     cur = con.cursor()
-    try:#checks for data
+    try:
         data = cur.execute("SELECT * FROM whiteElephantData").fetchall()
-        name, primaryEmail, number = zip(*data)
+        name, primaryEmail, number = zip(*data)#fetch numbers from database
     except ValueError:#handles exception for no rows in the table
         con.close()
         print("No participants found")
     else:
-        con.close()
-        orderedList = list(zip(name, number))
-        orderedList.sort(key=lambda x: x[1], reverse=False)#numerically orders list according to number
-        orderedName, orderedNumber = zip(*orderedList)
+        try:#checks to make sure numbers have been distributed\
+            orderedList = list(zip(name, number))
+            orderedList.sort(key=lambda x: x[1], reverse=False)#numerically orders list according to number
+            orderedName, orderedNumber = zip(*orderedList)
+            con.close()
+        except TypeError:
+            assignNumbers()#assign numbers
+            data = cur.execute("SELECT * FROM whiteElephantData").fetchall()
+            name, primaryEmail, number = zip(*data)#fetch numbers from database
+            con.close()
+            orderedList = list(zip(name, number))
+            orderedList.sort(key=lambda x: x[1], reverse=False)#numerically orders list according to number
+            orderedName, orderedNumber = zip(*orderedList)
         fullNumberList = """"""
         for i in range(len(name)):
             fullNumberList = fullNumberList + ("\n" + str(orderedNumber[i]) + ": " + orderedName[i])
@@ -299,7 +308,6 @@ rootWindow.withdraw()
 
 def printMenu():
     menu = {}
-    menu['0'] = "Print Menu"
     menu['1'] = "Gather new participants"
     menu['2'] = "List current participants"
     menu['3'] = "Assign numbers"
@@ -307,6 +315,7 @@ def printMenu():
     menu['5'] = "Delete participant"
     menu['6'] = "Prune empty entries"
     menu['7'] = "Clear DB"
+    menu['0'] = "Print menu to console"
     menu['-'] = "Exit"
 
     options=menu.keys()
@@ -324,10 +333,7 @@ while True:
         input("Please press enter when the data collection window is closed and you are ready to continue\n")
     else:
         selection=input("Please select an option:")
-        if selection =='0':
-            print()
-            printMenu()
-        elif selection =='1':
+        if selection =='1':
             print()
             openWindow()
             print()
@@ -355,6 +361,9 @@ while True:
             print()
             clearDB()
             print()
+        elif selection =='0':
+           print()
+           printMenu()
         elif selection =='-':
             break
         else:
