@@ -2,7 +2,7 @@
 
 Python program to help distribute White Elephant numbers. Collects participants, assigns numbers, and notifies everyone
 of their number via an email. An additional email will be sent to the first participant registered containing the
-number for everyone in the database.
+number for everyone in the database, in the correct numerical order.
 
 ## Details
 
@@ -41,4 +41,3 @@ smtpPort = 465, fromAddress to your email, and smtpPassword to an app password f
 - json
 - tkinter
 - time
-- thread
