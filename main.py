@@ -101,13 +101,17 @@ def emailNumbers():
         data = cur.execute("SELECT * FROM whiteElephantData").fetchall()
         name, primaryEmail, number = zip(*data)
     except ValueError:
+        con.close()
         print("No participants found")
     else:
+        con.close()
+        orderedList = list(zip(name, number))
+        orderedList.sort(key=lambda x: x[1], reverse=False)
+        orderedName, orderedNumber = zip(*orderedList)
         fullNumberList = """"""
         for i in range(len(name)):
-            fullNumberList = fullNumberList + ("\n" + str(number[i]) + ": " + name[i])
-        #[(name[i], number[i]) for i in range(len(name))]
-        con.close()
+            fullNumberList = fullNumberList + ("\n" + str(orderedNumber[i]) + ": " + orderedName[i])
+        print(fullNumberList)
 
         message = """From: noreply@tylerdavis.net\nTo: {email}\nSubject: White Elephant Number\n\n{name}, your number for White Elephant is {number}!"""
         messageFullNumberList= """From: noreply@tylerdavis.net\nTo: {email}\nSubject: Full list of White Elephant Numbers\n\nSee below for the full list of numbers:\n{fullNumberList}"""
