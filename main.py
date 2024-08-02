@@ -267,28 +267,33 @@ rootWindow.geometry(f'{window_width}x{window_height}+{center_x}+{center_y}')
 name = tk.StringVar()
 primaryEmail = tk.StringVar()
 
+style = ttk.Style()
+style.configure('TButton', font=("Times New Roman", 20))
+style.configure('TEntry', font=("Times New Roman", 20))
+style.configure('TLabel', font=("Times New Roman", 20))
+
 rootWindow.title("White Elephant Number Distributor")
 
 label = ttk.Label(rootWindow, text="Welcome to the White Elephant Game!")
 label.pack()
 
 nameLabel = ttk.Label(rootWindow, text="Please enter your name below")
-nameLabel.pack(padx=10, pady=10, fill='x', expand=True)
+nameLabel.pack(padx=10, pady=10, fill='x', expand=False)
 nameBox = ttk.Entry(rootWindow, textvariable=name)
-nameBox.pack(padx=10, pady=10, fill='x', expand=True)
+nameBox.pack(padx=10, pady=10, fill='x', expand=False)
 nameBox.focus()
 
 primaryEmailLabel = ttk.Label(rootWindow, text="Please enter your email below")
-primaryEmailLabel.pack(padx=10, pady=10, fill='x', expand=True)
+primaryEmailLabel.pack(padx=10, pady=10, fill='x', expand=False)
 primaryEmailBox = ttk.Entry(rootWindow, textvariable=primaryEmail)
-primaryEmailBox.pack(padx=10, pady=10, fill='x', expand=True)
+primaryEmailBox.pack(padx=10, pady=10, fill='x', expand=False)
 
 submitButton = ttk.Button(
    rootWindow,
    text="Submit",
    command=submitValues
 )
-submitButton.pack(padx=10, pady=10, fill='x', expand=True)
+submitButton.pack(padx=10, pady=10, fill='x', expand=False)
 
 rootWindow.withdraw()
 
