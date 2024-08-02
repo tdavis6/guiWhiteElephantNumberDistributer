@@ -174,6 +174,7 @@ def openWindow():
     # remove blur and open main window, decides whether to deiconify the window or to start it for the first time
     if rootWindow.state() == "withdrawn":
         rootWindow.deiconify()
+        nameBox.focus()
         print("Main window opened")
     else:
         try:
@@ -183,6 +184,7 @@ def openWindow():
             print("Not a Windows machine, skipping ctypes")
         finally:
             rootWindow.mainloop()
+            nameBox.focus()
             print("Main window opened")
 
 def onClosing():
@@ -190,11 +192,7 @@ def onClosing():
     print("Main window closed")
 
 def closeWindow(event):
-    rootWindow.withdraw()
-    print("Main window closed")
-
-def submitValesReturn(event):
-    submitValues()
+    onClosing()
 
 def submitValues():
     name = nameBox.get()
@@ -212,6 +210,9 @@ def submitValues():
     nameBox.delete(0, tk.END)
     primaryEmailBox.delete(0, tk.END)
     nameBox.focus()
+
+def submitValesReturn(event):
+    submitValues()
 
 def deleteParticipant():
     con = sqlite3.connect(dbfile)
@@ -330,9 +331,9 @@ printMenu()
 
 while True:
     if rootWindow.state() == "normal":
-        input("Please press enter when the data collection window is closed and you are ready to continue\n")
+        input("Please press enter when the data collection window is closed and you are ready to continue\n\n")
     else:
-        selection=input("Please select an option:")
+        selection = input("Please select an option: ")
         if selection =='1':
             print()
             openWindow()
