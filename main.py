@@ -109,23 +109,23 @@ def emailNumbers():
     cur = con.cursor()
     try:
         data = cur.execute("SELECT * FROM whiteElephantData").fetchall()
-        name, primaryEmail, number = zip(*data)#fetch numbers from database
-    except ValueError:#handles exception for no rows in the table
+        name, primaryEmail, number = zip(*data)  # fetch numbers from database
+    except ValueError:  # handles exception for no rows in the table
         con.close()
         print("No participants found")
     else:
-        try:#checks to make sure numbers have been distributed\
+        try:  # checks to make sure numbers have been distributed\
             orderedList = list(zip(name, number))
-            orderedList.sort(key=lambda x: x[1], reverse=False)#numerically orders list according to number
+            orderedList.sort(key=lambda x: x[1], reverse=False)  # numerically orders list according to number
             orderedName, orderedNumber = zip(*orderedList)
             con.close()
         except TypeError:
-            assignNumbers()#assign numbers
+            assignNumbers()  # assign numbers
             data = cur.execute("SELECT * FROM whiteElephantData").fetchall()
-            name, primaryEmail, number = zip(*data)#fetch numbers from database
+            name, primaryEmail, number = zip(*data)  # fetch numbers from database
             con.close()
             orderedList = list(zip(name, number))
-            orderedList.sort(key=lambda x: x[1], reverse=False)#numerically orders list according to number
+            orderedList.sort(key=lambda x: x[1], reverse=False)  # numerically orders list according to number
             orderedName, orderedNumber = zip(*orderedList)
         fullNumberList = """"""
         for i in range(len(name)):
