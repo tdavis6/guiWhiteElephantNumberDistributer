@@ -31,7 +31,7 @@ smtpPort = 465, fromAddress to your email, and smtpPassword to an app password f
 
 ## Requirements
 - Python 3
-### Package Requirements
+### Python Package Requirements
 - os 
 - sys 
 - sqlite3 
